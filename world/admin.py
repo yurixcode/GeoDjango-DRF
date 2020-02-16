@@ -1,3 +1,6 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 
-# Register your models here.
+# Models
+from .models import WorldBorder
+
+admin.site.register(WorldBorder, admin.OSMGeoAdmin)

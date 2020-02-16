@@ -1,4 +1,4 @@
-FROM python:3
+FROM makinacorpus/geodjango:bionic-3.6
 ENV PYTHONUNBUFFERED 1
 
 RUN mkdir /code

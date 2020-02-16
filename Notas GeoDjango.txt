@@ -1,0 +1,63 @@
+
+ESTI Shapefile
+
+
+.shp: Contiene los datos vectoriales para las geometrías de fronteras mundiales.
+
+.shx: Archivo de índice espacial para geometrías almacenadas en .shp.
+
+.dbf: Archivo de base de datos para contener datos de atributos no geométricos (por ejemplo, campos enteros y de caracteres).
+
+.prj: Contiene la información de referencia espacial para los datos geográficos almacenados en el archivo de forma.
+
+--
+
+El sistema de referencia espacial predeterminado para los campos de geometría es WGS84 (lo que significa que el SRID es 4326);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
