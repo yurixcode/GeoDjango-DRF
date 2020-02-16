@@ -2,15 +2,29 @@ version: '3'
 
 services:
     db:
-        image: postgres
+        image: mdillon/postgis
+        ports: 
+            - "5432:5432"
         environment:
             POSTGRES_PASSWORD: postgres
+            
     web:
         build: .
-        command: python mannage runserver 0.0.0.0:8000
+        restart: always
+        command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/code
         ports: 
             - "8000:8000"
+        depends_on:
+            - db
+
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+            PGADMIN_DEFAULT_PASSWORD: admin
+        ports:
+            - "80:80"
         depends_on:
             - db
