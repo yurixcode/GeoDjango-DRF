@@ -1,6 +1,15 @@
+# BASE
 Django>=2.2,<3.0
 djangorestframework==3.11.0
 redis==2.10.3
 django-redis==4.3.0
 gunicorn==19.3.0
 psycopg2>=2.7,<3.0
+djangorestframework-gis==0.15
+djangorestframework-simplejwt==4.4.0
+
+# DEV
+django-debug-toolbar==2.1
+django-extensions==2.2.5
+pylint==2.4.4
+pylint-django==2.0.13

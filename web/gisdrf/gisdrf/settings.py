@@ -27,19 +27,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# For Django Debug Toolbar
+INTERNAL_IPS = ['192.168.99.100', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Apps
+    'django_extensions',
     'django.contrib.gis',
-    'api',
     'restaurants',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'gisdrf.urls'
@@ -108,7 +115,7 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-#############################
+##########################################################
 
 
 # Password validation

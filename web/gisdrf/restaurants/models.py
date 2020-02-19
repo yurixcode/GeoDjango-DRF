@@ -1,5 +1,16 @@
 from django.contrib.gis.db import models
 
+class Restaurant(models.Model):
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=255)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 class WorldBorder(models.Model):
     # Regular Django fields corresponding to the attributes in the
     # world borders shapefile.
