@@ -1,30 +1,67 @@
 version: '3'
 
-services:
-    db:
-        image: mdillon/postgis
-        ports: 
-            - "5432:5432"
-        environment:
-            POSTGRES_PASSWORD: postgres
-            
+volumes: 
     web:
-        build: .
+    storage:
+          
+services:
+    web:
         restart: always
-        command: python3 manage.py runserver 0.0.0.0:8000
-        volumes:
-            - .:/code
-        ports: 
-            - "8000:8000"
+        build: ./web
+        expose: 
+            - "8000"
         depends_on:
-            - db
+            - postgres
+            - redis
+        env_file: env
+        volumes: 
+            - web:/data
+            - ./web:/data/web
+        # command: gunicorn ./gisdrf/gisdrf.wsgi
+        command: python3 ./gisdrf/manage.py runserver 0.0.0.0:8000
+
+
+    nginx:
+        restart: always
+        build: ./nginx/
+        ports:
+            - "80:80"
+        volumes:
+            - web:/data
+        
+        
+    postgres:
+        restart: always
+        build: ./postgres
+        volumes:
+            - storage:/storage
+            - ./backups/postgresql:/storage/db/backup
+            - ./postgres:/storage/db/
+        env_file:
+            - env
+        expose: 
+            - "5432"
+
+
+    redis:
+        restart: always
+        image: redis:latest
+        expose: 
+            - "6379"
+
+
+    data:
+        restart: always
+        image: alpine
+        volumes:
+            - storage:/storage
+            - /var/lib/postgresql
+
 
     pgadmin:
         image: dpage/pgadmin4
-        environment:
-            PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-            PGADMIN_DEFAULT_PASSWORD: admin
+        env_file:
+            - env
         ports:
-            - "80:80"
-        depends_on:
-            - db
+            - "90:80"
+        command: "true"

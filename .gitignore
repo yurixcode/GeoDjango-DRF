@@ -1,5 +1,5 @@
-env/
-data/
+venv/
 *.sqlite3
 *.pyc
 *.vscode
+env
