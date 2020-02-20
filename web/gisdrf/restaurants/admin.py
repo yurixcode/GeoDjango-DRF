@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 
 # Models
-from .models import WorldBorder
+from .models import Restaurant
 
-admin.site.register(WorldBorder, admin.OSMGeoAdmin)
+admin.site.register(Restaurant, admin.OSMGeoAdmin)
