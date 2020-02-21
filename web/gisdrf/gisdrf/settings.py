@@ -18,6 +18,10 @@ ALLOWED_HOSTS = ['*']
 # For Django Debug Toolbar
 INTERNAL_IPS = ['192.168.99.100', '127.0.0.1']
 
+# Google’s Geocoding API
+GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -34,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'rest_framework',
     'api',
+    'locations',
     'restaurants',
     'persons',
 ]
