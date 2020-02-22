@@ -7,7 +7,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('', include('restaurants.urls')),
+    path('', include('restaurants.urls'), name="restaurants"),
 ] 
 
 if settings.DEBUG:

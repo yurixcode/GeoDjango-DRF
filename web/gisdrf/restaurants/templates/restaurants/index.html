@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
 {% load restaurant_extras %}
+{% url "restaurants:home" as nearby %}
 
 {% block content %}
 <div class="container mt-5">
     <h1>Nearby Restaurants</h1>
 
     <div class="row mt-5">
-        <div class="col-12">
+        <div class="col-sm-12 w-100">
             <h2 class="text-center">Click to find the nearest restaurant</h2>
-            <!-- <form method="GET">
-                <button class="btn btn-outline-success btn-block btn-lg">Search!</button>
-                <br><br>
-            </form> -->
-            <button id="find-me" class="btn btn-outline-success btn-block btn-lg">Search!</button>
+            <button id="find-me" class="btn btn-outline-primary btn-block btn-lg">Search!</button>
+
+            {% if 'nearby' in request.path %}
+            <button id="find-me" class="btn btn-outline-success btn-block mt-3">Download Excel Results</button>
+            {% endif %}
+
             <p id = "status"></p>
             <a id = "map-link" target="_blank"></a>
         </div>
 
-        <div class="col">
+        <div class="col-sm-12">
             {% if restaurants %}
             <div class="card">
                 <ul class="list-group list-group-flush text-center">
@@ -68,7 +70,7 @@
             var token = '{{ csrf_token }}';
 
             url = "/nearby/"
-            var path = url + longitude + "/" + latitude;
+            var path = url + "@" + longitude + "-" + latitude;
 
             $.ajax({
                 // headers: { 'X-CSRFToken': token },

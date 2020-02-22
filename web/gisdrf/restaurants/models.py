@@ -4,6 +4,7 @@ from django.conf import settings
 
 # GeoDjango
 from django.contrib.gis.geos import Point
+from django.contrib.gis.db.models.functions import Distance
 
 # Signals
 from django.dispatch import receiver
@@ -14,6 +15,26 @@ from locations.models import Location
 
 # Utils
 import geocoder
+
+
+class RestaurantManager(models.Manager):
+
+    def get_restaurants_near_pnt(self, x, y, results=10):
+        """
+        Aquí vamos a obtener y devolver los restaurantes más 
+        cercanos a las cordenadas indicadas...
+        """
+        queryset =self.annotate(distance=Distance('pnt', self.create_pnt(x, y))
+                                            ).exclude(name__exact="no-name"
+                                            ).order_by('distance')[0:results]
+        return queryset
+
+    def create_pnt(self, x, y):
+        """
+        Crearemos el objeto 'Point' con los parámetros recibidos.
+        """
+        return Point(float(x), float(y), srid=4326)
+
 
 
 class Restaurant(Location):
@@ -27,6 +48,8 @@ class Restaurant(Location):
 
     name = models.CharField(max_length=100)
     twenty_four_hours = models.BooleanField(default=False)
+
+    objects = RestaurantManager()
 
     def __str__(self):
         return "{} - {}".format(self.name, self.address)
