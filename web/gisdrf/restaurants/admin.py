@@ -3,4 +3,8 @@ from django.contrib.gis import admin
 # Models
 from .models import Restaurant
 
-admin.site.register(Restaurant, admin.OSMGeoAdmin)
+
+@admin.register(Restaurant)
+class RestaurantAdmin(admin.OSMGeoAdmin):
+    list_display = ('name', 'pnt')
+    search_fields = ('name',)

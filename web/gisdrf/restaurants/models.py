@@ -25,7 +25,7 @@ class Restaurant(Location):
         - created_at = models.DateTimeField(auto_now_add=True)
     """
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     twenty_four_hours = models.BooleanField(default=False)
 
     def __str__(self):
@@ -38,7 +38,7 @@ class Restaurant(Location):
 
 # Signals
 
-@receiver(pre_save, sender=Restaurant)
+# @receiver(pre_save, sender=Restaurant)
 def getting_location_pnt(sender, instance, **kwargs):
     """
     Obtenemos la dirección introducida, la convertimos a
