@@ -13,7 +13,7 @@ def generate_csv():
         ['cccc', '39489843', '9999'],
     ]
 
-    with open('ejemplo_csv', 'w', newline='', encoding="utf8") as arq:
+    with open('ejemplo_csv.csv', 'w', newline='', encoding="utf8") as arq:
         writer = csv.writer(arq, delimiter=";")
         writer.writerows(data)
 
