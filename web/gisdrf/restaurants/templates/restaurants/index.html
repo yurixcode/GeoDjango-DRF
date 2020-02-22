@@ -11,8 +11,11 @@
             <h2 class="text-center">Click to find the nearest restaurant</h2>
             <button id="find-me" class="btn btn-outline-primary btn-block btn-lg">Search!</button>
 
-            {% if 'nearby' in request.path %}
-            <button id="find-me" class="btn btn-outline-success btn-block mt-3">Download Excel Results</button>
+            {% if longitude and latitude %}
+            <a id="download-csv"
+            class="btn btn-outline-success btn-block mt-3"
+            href="{% url "restaurants:csv_file" longitude latitude %}">
+            Download Excel Results</a>
             {% endif %}
 
             <p id = "status"></p>
@@ -51,6 +54,11 @@
 {% endblock content %}
 
 {% block scripts %}
+
+    <script>
+        
+    </script>
+
     <script>
         function geoFindMe() {
             const status = document.querySelector('#status');
@@ -65,9 +73,10 @@
 
             status.textContent = '';
             mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            mapLink.className = `btn btn-outline-success btn-block`;
             mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
-            var token = '{{ csrf_token }}';
+            // var token = '{{ csrf_token }}';
 
             url = "/nearby/"
             var path = url + "@" + longitude + "-" + latitude;

@@ -1,5 +1,5 @@
 # Django
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 # GeoDjango
@@ -8,6 +8,13 @@ from django.contrib.gis.db.models.functions import Distance
 
 # Models
 from .models import Restaurant
+
+# Utils
+import django_excel as excel
+from django.utils import timezone
+
+# Tasks
+from .generate_csv import generate_csv
 
 
 class HomeView(View):
@@ -26,5 +33,27 @@ class HomeView(View):
             """
             nearby_restaurants = Restaurant.objects.get_restaurants_near_pnt(x, y)
             context['restaurants'] = nearby_restaurants
+            context['latitude'] = y
+            context['longitude'] = x
         
         return render(request, self.template_name, context)
+
+
+def get_csv_file(request, x, y):
+    """
+    Generamos el archivo CSV con los restaurantes ordenados
+    según su distancia al usuario, y devolvemos el archivo CSV
+    para su descarga...
+    """
+
+    export = generate_csv(x, y)
+
+    # Creamos una string para nombrar al archivo a descargar.
+    today = timezone.now()
+    strToday = today.strftime("%Y/%m/%d-%H:%M:%S")
+    file_name = "results-"+ strToday + ".csv"
+
+    # Generamos el archivo CSV en memoria
+    sheet = excel.pe.Sheet(export)
+
+    return excel.make_response(sheet, "csv", file_name=file_name)
