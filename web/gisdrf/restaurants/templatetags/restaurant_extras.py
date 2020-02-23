@@ -11,9 +11,10 @@ def distance_format(value):
     defecto con tal de mostrar una distancia más 
     amigable...
     """
-    if value.m <= 2.000:
+    # import pdb; pdb.set_trace()
+    if value.m <= 2000.00:
         return "{0:.2f} m".format(value.m)
 
-    elif value.m > 2.000:
+    elif value.m > 2000.00:
         km = value.m / 1000.00
         return "{0:.3f} km".format(km)

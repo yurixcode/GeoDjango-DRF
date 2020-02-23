@@ -19,21 +19,26 @@ import geocoder
 
 class RestaurantManager(models.Manager):
 
-    def get_restaurants_near_pnt(self, x, y, results=10):
+    def get_restaurants_near_pnt(self, x, y, results=None):
         """
         Aquí vamos a obtener y devolver los restaurantes más 
         cercanos a las cordenadas indicadas...
         """
         queryset =self.annotate(distance=Distance('pnt', self.create_pnt(x, y))
-                                            ).exclude(name__exact="no-name"
-                                            ).order_by('distance')[0:results]
-        return queryset
+                                                ).exclude(name__exact="no-name"
+                                                ).order_by('distance')
 
-    def create_pnt(self, x, y):
+        if results:
+            return queryset[0:results]
+
+        return queryset
+        
+
+    def create_pnt(self, x, y, srid=4326):
         """
         Crearemos el objeto 'Point' con los parámetros recibidos.
         """
-        return Point(float(x), float(y), srid=4326)
+        return Point(float(x), float(y), srid=srid)
 
 
 
@@ -61,7 +66,7 @@ class Restaurant(Location):
 
 # Signals
 
-# @receiver(pre_save, sender=Restaurant)
+@receiver(pre_save, sender=Restaurant)
 def getting_location_pnt(sender, instance, **kwargs):
     """
     Obtenemos la dirección introducida, la convertimos a
@@ -72,7 +77,8 @@ def getting_location_pnt(sender, instance, **kwargs):
     latitude = g.json.get('lat')
     longitude = g.json.get('lng')
     
-    pnt = Point(longitude, latitude, srid=4326)
+    
+    pnt = sender.objects.create_pnt(longitude, latitude)
 
     if instance.pnt != pnt:
         instance.pnt = pnt

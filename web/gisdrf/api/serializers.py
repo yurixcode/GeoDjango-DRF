@@ -7,9 +7,18 @@ from persons.models import Person
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
+    distance_km = serializers.DecimalField(source='distance.km', max_digits=10,
+                                        decimal_places=3, required=False, read_only=True)
+
+    distance_m = serializers.DecimalField(source='distance.m', max_digits=10,
+                                    decimal_places=2, required=False, read_only=True)
+
     class Meta:
         model = Restaurant
-        fields = ('id', 'name', 'address', 'pnt', 'twenty_four_hours')
+
+        fields = ('id', 'name', 'address', 'pnt',
+        'twenty_four_hours', 'distance_km', 'distance_m')
+
         read_only_fields = ('pnt',)
 
 

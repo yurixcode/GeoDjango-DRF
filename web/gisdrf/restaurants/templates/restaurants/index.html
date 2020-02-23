@@ -4,18 +4,25 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Nearby Restaurants</h1>
 
     <div class="row mt-5">
-        <div class="col-sm-12 w-100">
-            <h2 class="text-center">Click to find the nearest restaurant</h2>
-            <button id="find-me" class="btn btn-outline-primary btn-block btn-lg">Search!</button>
+        <div class="col-sm-12">
+            <h1 class="text-center">Click to find the nearest restaurant</h1>
+            <button id="find-me" class="btn btn-outline-danger btn-block btn-lg">Search!</button>
 
             {% if longitude and latitude %}
+            <hr>
+
+            <a class="btn btn-warning btn-block mt-3"
+            href="{% url 'api:restaurants_list' %}?lat={{latitude}}&lng={{longitude}}"
+            target="_blank">
+            Results in API Endpoint</a>
+
             <a id="download-csv"
-            class="btn btn-outline-success btn-block mt-3"
+            class="btn btn-success btn-block mt-3"
             href="{% url "restaurants:csv_file" longitude latitude %}">
             Download Excel Results</a>
+
             {% endif %}
 
             <p id = "status"></p>
@@ -56,10 +63,6 @@
 {% block scripts %}
 
     <script>
-        
-    </script>
-
-    <script>
         function geoFindMe() {
             const status = document.querySelector('#status');
             const mapLink = document.querySelector('#map-link');
@@ -79,7 +82,7 @@
             // var token = '{{ csrf_token }}';
 
             url = "/nearby/"
-            var path = url + "@" + longitude + "-" + latitude;
+            var path = url + "@" + longitude + "/" + latitude;
 
             $.ajax({
                 // headers: { 'X-CSRFToken': token },

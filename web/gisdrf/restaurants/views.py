@@ -14,9 +14,9 @@ import django_excel as excel
 from django.utils import timezone
 
 # Tasks
-from .generate_csv import generate_csv
-
 from .tasks import show_hello_world
+# from .generate_csv import generate_csv
+
 
 
 class HomeView(View):
@@ -34,7 +34,7 @@ class HomeView(View):
             Obtenemos los restaurantes más cercanos al usuario,
             a partir de las cordenadas obtenidas...
             """
-            nearby_restaurants = Restaurant.objects.get_restaurants_near_pnt(x, y)
+            nearby_restaurants = Restaurant.objects.get_restaurants_near_pnt(x, y, results=20)
             context['restaurants'] = nearby_restaurants
             context['latitude'] = y
             context['longitude'] = x
