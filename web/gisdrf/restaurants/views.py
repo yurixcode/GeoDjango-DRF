@@ -16,6 +16,8 @@ from django.utils import timezone
 # Tasks
 from .generate_csv import generate_csv
 
+from .tasks import show_hello_world
+
 
 class HomeView(View):
     template_name = "restaurants/index.html"
@@ -24,6 +26,7 @@ class HomeView(View):
         """
         GET
         """
+        show_hello_world.delay()
         context = {}
 
         if x and y:

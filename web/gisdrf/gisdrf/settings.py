@@ -16,7 +16,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # For Django Debug Toolbar
-INTERNAL_IPS = ['192.168.99.100', '127.0.0.1']
+INTERNAL_IPS = ['*']
 
 # Google’s Geocoding API
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'locations',
     'restaurants',
     'persons',
+    'celery',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +109,20 @@ CACHES = {
         }
     }
 }
+
+# Celery as broker settings
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'task-number-one': {
+        'task': 'restaurants.tasks.show_hello_world',
+        'schedule': crontab(minute=59, hour=23),
+    },
+}
+
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
