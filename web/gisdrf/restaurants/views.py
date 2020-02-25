@@ -15,8 +15,7 @@ from django.utils import timezone
 
 # Tasks
 from .tasks import show_hello_world
-# from .generate_csv import generate_csv
-
+from .generate_csv import generate_csv
 
 
 class HomeView(View):
@@ -60,3 +59,53 @@ def get_csv_file(request, x, y):
     sheet = excel.pe.Sheet(export)
 
     return excel.make_response(sheet, "csv", file_name=file_name)
+
+
+
+###
+"""
+LO SIGUIENTE TRATA DE UNA PRUEBA, NO FORMA PARTE
+DE LA APLICACIÓN EN SI MISMA...
+"""
+import datetime
+import time
+from django.http import StreamingHttpResponse
+def stream(request):
+    """
+    Implementación de SSE nativa con django.
+
+    Leer más aqui:
+    https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.StreamingHttpResponse
+    """
+    def event_stream():
+        """
+        Esto es un simple test para conocer el funcionamiento de 
+        StreamingHttpResponse, básicamente, estará devolviendo al
+        usuario una actualización de la hora correspondiente.
+
+        Es necesario que el cliente se suscriba a este evento desde el template.
+
+        EJ:
+
+        <body>
+            <h4>Getting server updates</h4>
+            <div id="result"></div>
+        </body>
+
+        <script>
+            if(typeof(EventSource) !== "undefined") {
+            var source = new EventSource("{% url 'restaurants:stream' %}");
+            source.onmessage = function(event) {
+                console.log(event);
+                document.getElementById("result").innerHTML += event.data + "<br>";
+            };
+            } else {
+            document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+            }
+        </script>
+        """
+        while True:
+            time.sleep(3)
+            yield 'data: The server time is: %s\n\n' % datetime.datetime.now()
+
+    return StreamingHttpResponse(event_stream(), content_type='text/event-stream')

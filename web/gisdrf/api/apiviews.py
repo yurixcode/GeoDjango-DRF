@@ -1,7 +1,7 @@
+# Django Rest Framework
+
 # GeoDjango
 from django.contrib.gis.geos import GEOSGeometry, Point
-
-# Django Rest Framework
 
 # APIViews
 from rest_framework import generics

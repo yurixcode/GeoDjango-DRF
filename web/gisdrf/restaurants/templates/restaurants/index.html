@@ -25,6 +25,11 @@
 
             {% endif %}
 
+            <div class="mt-5">
+                <h4>Getting server updates</h4>
+                <div id="result"></div>
+            </div>
+
             <p id = "status"></p>
             <a id = "map-link" target="_blank"></a>
         </div>
@@ -61,6 +66,17 @@
 {% endblock content %}
 
 {% block scripts %}
+    <script>
+        if(typeof(EventSource) !== "undefined") {
+        var source = new EventSource("{% url 'restaurants:stream' %}");
+        source.onmessage = function(event) {
+            console.log(event);
+            document.getElementById("result").innerHTML += event.data + "<br>";
+        };
+        } else {
+        document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+        }
+    </script>
 
     <script>
         function geoFindMe() {
