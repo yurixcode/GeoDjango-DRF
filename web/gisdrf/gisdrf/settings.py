@@ -167,15 +167,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = "./gisdrf/static"
 
 # STATICFILE_FINDERS = [
 #     'django.contrib.staticfiles.finders.FileSystemFinder',
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 # ]
 
-STATIC_ROOT = "./gisdrf/static"
+
+
+# Django REST Framework
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+
+# Mercure Settings
+
+MERCURE_ENABLED = os.environ['MERCURE_ENABLED']
+
+MERCURE_JWT_KEY = os.environ['MERCURE_JWT_KEY']
+MERCURE_HUB_URL = os.environ['MERCURE_HUB_URL']
+
+MERCURE_HUB_COOKIE_DOMAIN = os.environ['MERCURE_HUB_COOKIE_DOMAIN']
+MERCURE_HUB_SECURE_COOKIE = os.environ['MERCURE_HUB_SECURE_COOKIE']

@@ -18,7 +18,29 @@ from .tasks import show_hello_world
 from .generate_csv import generate_csv
 
 
-class HomeView(View):
+# Example view that will get real-time events on the client
+
+from django.views import generic
+from gisdrf.mixins import MercureMixin
+from django.contrib.auth import get_user_model
+
+# User Model
+User = get_user_model()
+
+class StatusList(MercureMixin, generic.ListView):
+    template_name = "restaurants/sse.html"
+    queryset = User.objects.all()
+
+    mercure_subscribe_targets = ["test"]
+    # mercure_publish_targets = ['status1']
+    mercure_hub_topics = ["test"]
+  
+class StatusDetail(MercureMixin, generic.DetailView):
+    template_name = "restaurants/sse.html"
+    model = User
+
+
+class HomeView(MercureMixin, View):
     template_name = "restaurants/index.html"
 
     def get(self, request, x=None, y=None, *args, **kwargs):
@@ -26,6 +48,7 @@ class HomeView(View):
         GET
         """
         show_hello_world.delay()
+        
         context = {}
 
         if x and y:
