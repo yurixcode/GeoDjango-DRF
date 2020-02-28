@@ -16,7 +16,7 @@ services:
         depends_on:
             - postgres
             - redis
-        env_file: env
+        env_file: .env
         volumes: 
             - web:/data
             - ./web:/data/web
@@ -44,7 +44,7 @@ services:
             # - storage:/storage
             - storage:/var/lib/postgresql/data
         env_file:
-            - env
+            - .env
         expose: 
             - "5432"
 
@@ -59,7 +59,7 @@ services:
     pgadmin:
         image: dpage/pgadmin4
         env_file:
-            - env
+            - .env
         ports:
             - "90:80"
         command: "true"
