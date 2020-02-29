@@ -72,6 +72,9 @@ def getting_location_pnt(sender, instance, **kwargs):
     Obtenemos la dirección introducida, la convertimos a
     cordenadas para después guardarla en la propiedad 'pnt'.
     """
+    if not instance.address:
+        return
+
     address = instance.address
     g = geocoder.google(address, key=settings.GOOGLE_API_KEY)
     latitude = g.json.get('lat')
