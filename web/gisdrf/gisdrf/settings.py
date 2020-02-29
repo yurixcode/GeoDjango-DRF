@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'requestlogs.middleware.RequestLogsMiddleware',
+    'requestlogs.middleware.RequestIdMiddleware',
 ]
 
 ROOT_URLCONF = 'gisdrf.urls'
@@ -179,13 +181,13 @@ STATIC_ROOT = "./gisdrf/static"
 # Django REST Framework
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'requestlogs.views.exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
 
 
 # Mercure Settings
-
 MERCURE_ENABLED = os.environ['MERCURE_ENABLED']
 
 MERCURE_JWT_KEY = os.environ['MERCURE_JWT_KEY']
@@ -193,3 +195,33 @@ MERCURE_HUB_URL = os.environ['MERCURE_HUB_URL']
 
 MERCURE_HUB_COOKIE_DOMAIN = os.environ['MERCURE_HUB_COOKIE_DOMAIN']
 MERCURE_HUB_SECURE_COOKIE = os.environ['MERCURE_HUB_SECURE_COOKIE']
+
+
+# Requestlogs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'requestlogs_to_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/requestlogs.log',
+        },
+    },
+    'loggers': {
+        'requestlogs': {
+            'handlers': ['requestlogs_to_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+REQUESTLOGS = {
+    'STORAGE_CLASS': 'requestlogs.storages.LoggingStorage',
+    'ENTRY_CLASS': 'requestlogs.entries.RequestLogEntry',
+    'SERIALIZER_CLASS': 'requestlogs.storages.RequestIdEntrySerializer',
+    'SECRETS': ['password', 'token'],
+    'ATTRIBUTE_NAME': '_requestlog',
+    'METHODS': ('GET', 'PUT', 'PATCH', 'POST', 'DELETE'),
+}
