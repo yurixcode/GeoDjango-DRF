@@ -8,7 +8,7 @@ from locations.models import Location
 from .managers import RestaurantManager
 
 # Translation
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 class Restaurant(Location):

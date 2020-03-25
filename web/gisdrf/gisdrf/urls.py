@@ -3,12 +3,17 @@ from django.contrib.gis import admin
 from django.urls import path, include
 from django.conf import settings
 
+# Language prefix
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+
+urlpatterns = [] 
+
+urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('', include('restaurants.urls'), name="restaurants"),
-] 
+)
 
 if settings.DEBUG:
     import debug_toolbar
