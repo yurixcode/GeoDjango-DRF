@@ -7,6 +7,9 @@ from locations.models import Location
 # Managers
 from .managers import RestaurantManager
 
+# Translation
+from django.utils.translation import gettext as _
+
 
 class Restaurant(Location):
     """
@@ -17,10 +20,15 @@ class Restaurant(Location):
         - created_at = models.DateTimeField(auto_now_add=True)
     """
 
-    name = models.CharField(max_length=100)
-    twenty_four_hours = models.BooleanField(default=False)
+    name = models.CharField(_('Nombre del restaurante'), max_length=100)
+    twenty_four_hours = models.BooleanField(_('¿Está abierto 24 horas?'), default=False)
 
     objects = RestaurantManager()
+
+    class Meta:
+        verbose_name = _('Restaurante')
+        verbose_name_plural = _('Restaurantes')
+        ordering = ['id']
 
     def __str__(self):
         return "{} - {}".format(self.name, self.address)
